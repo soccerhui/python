@@ -4,6 +4,8 @@ set tabstop=4
 set shiftwidth=4
 set nu
 
+let mapheader='\'
+
 au BufNewFile,BufRead *.py
 	\ set tabstop=4 |
 	\ set softtabstop=4 |
@@ -53,8 +55,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'   " git plugin
 Plugin 'bitc/vim-bad-whitespace'    " hightlight the whitespace
 Plugin 'davidhalter/jedi-vim'    "coding tips
-
-
+Plugin 'fatih/vim-go'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -85,8 +86,15 @@ nnoremap <space> za
 
 " 2, setup for the YCM
 let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
+"let g:ycm_python_binary_path = '/usr/bin'
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>gt :YcmCompleter GetType<CR>
+nnoremap <leader>gp :YcmCompleter GetParent<CR>
 
 " 3, syntex check and highlight
 let python_highlight_all=1
@@ -106,8 +114,10 @@ syntax on
 
 " 5, setup for the nerdtree
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-
-
+"open NERDTree
+map <C-n> :NERDTreeToggle<CR>
+"close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 """"""""""""""""""""""     "Quickly Run     """""""""""""""""""""" map
 map <F5> :call CompileRunGcc()<CR>
@@ -159,3 +169,14 @@ nnoremap <F2> :NERDTreeToggle<CR>
 "  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
 "  execfile(activate_this, dict(__file__=activate_this))
 "EOF
+"
+"
+"<ctrl+p> key
+"gt: tab the next windows
+"gT: tab teh prev windows
+"ctrl=t: open file in new tab
+"ctrl+v: open in prev split window of same tab
+
+"python 自动补全插件  YCM already has this function
+"let g:pydiction_location = '~/.vim/tools/pydiction/complete-dist'
+"let g:pydiction_menu_height = 3
